@@ -28,15 +28,16 @@ import java.net.URL;
 
 public class MainActivity extends Activity {
 
-
+    float weight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        weight = 0.0f;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         TypefaceProvider.registerDefaultIconSets();
 
-
+        getWeight();
 
         output_func();
 
@@ -44,11 +45,27 @@ public class MainActivity extends Activity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         textView.setText(sp.getString("SaveString", null), BufferType.NORMAL);
 
+        /*
+        TextView textView2 = (TextView)findViewById(R.id.textView13);
+
+
+        textView2.setText(Float.toString(weight));*/
+
         BootstrapButton saveButton = (BootstrapButton) findViewById(R.id.button2);
         saveButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 save_ButtonClick();
+            }
+        });
+
+        BootstrapButton updateButton = (BootstrapButton) findViewById(R.id.button_update);
+        updateButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                TextView textView2 = (TextView)findViewById(R.id.textView13);
+                getWeight();
+                textView2.setText(Float.toString(weight));
             }
         });
 
@@ -64,43 +81,19 @@ public class MainActivity extends Activity {
     private void save_ButtonClick() {
         // 保存
 
-        int weight = this.getWeight();
+        //this.getWeight();
 
         EditText editText = (EditText)findViewById(R.id.editText8);
 
-        /*int slength = editText.getText().toString().length();
 
-
-
-        if(slength > 10) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            // アラートダイアログのタイトルを設定します
-            alertDialogBuilder.setTitle("Error");
-            // アラートダイアログのメッセージを設定します
-            alertDialogBuilder.setMessage("Too many characters(less than 10)");
-            // アラートダイアログの肯定ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
-            alertDialogBuilder.setPositiveButton("OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            return;
-                        }
-                    });
-        }*/
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("SaveString", Integer.toString(weight) + " : " + editText.getText().toString()).commit();
+        //sp.edit().putString("SaveString", Float.toString(weight) + " : " + editText.getText().toString()).commit();
+        sp.edit().putString("SaveString", editText.getText().toString()).commit();
         output_func();
     }
 
-    private int getWeight() {
-
-        //String ip = "192.168.20.2";
-        //String ip = "172.217.25.227";
-        //int port = 80;
-        int weight = -1;
-
-        //String url = "http://www.ipentec.com/default.aspx";
+    private void getWeight() {
 
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -109,21 +102,22 @@ public class MainActivity extends Activity {
                     URL url = null;
                     InputStreamReader isr = null;
                     //String ip = "172.217.25.227";
-                    String ip = "www.lab.ime.cmc.osaka-u.ac.jp";
+                    String ip = "192.168.100.167";
+                    String text = "";
                     try {
                         url = new URL("http",ip,80,"/");
                         InputStream is = url.openStream();
                         isr = new InputStreamReader(is,"UTF-8");
-                        String text = "";
+
                         while(true) {
                             int i = isr.read();
                             if (i == -1) {
                                 break;
                             }
-                            //System.out.print((char)i);
                             text = text + (char)i;
                         }
-                        Log.d("internet:html",text);
+                        //Log.d("internet:html",text);
+                        weight = Float.parseFloat(text);
                     }catch (Exception e) {
                         Log.d("internet:error",e.getMessage());
                     }finally {
@@ -134,24 +128,6 @@ public class MainActivity extends Activity {
                         }
                     }
 
-                    /*
-                    String url = "http://www.casareal.co.jp";
-                    OkHttpClient client = new OkHttpClient();
-
-                    try {
-                        Log.d("internet","1");
-                        Request request = new Request.Builder().url(url).build();
-                        Log.d("internet","2");
-                        Call call = client.newCall(request);
-                        Log.d("internet","3");
-                        Response response = call.execute();
-                        Log.d("internet","4");
-                        ResponseBody body = response.body();
-                        Log.d("internet","5");
-                    }catch (IOException e) {
-                        Log.d("internet",e.getMessage());
-                    }*/
-
                 } catch (Exception e) {
                     Log.e("thread", e.getMessage());
                 }
@@ -160,73 +136,6 @@ public class MainActivity extends Activity {
         thread.start();
         Log.d("internet","20");
 
-
-        /*
-        //URL url;
-        InputStreamReader isr = null;
-
-        String url = "http://www.casareal.co.jp";
-        OkHttpClient client = new OkHttpClient();
-
-        try {
-            Log.d("internet","1");
-            Request request = new Request.Builder().url(url).build();
-            Log.d("internet","2");
-            Call call = client.newCall(request);
-            Log.d("internet","3");
-            Response response = call.execute();
-            Log.d("internet","4");
-            ResponseBody body = response.body();
-            Log.d("internet","5");
-        }catch (IOException e) {
-            Log.d("internet","IO Error");
-        }
-
-
-
-        URL url = null;
-        HttpURLConnection urlConnection ;
-
-
-        try {
-
-
-            Log.d("internet","1");
-            url = new URL("https",ip,port,"/");
-            Log.d("internet","2");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            Log.d("internet","3");
-
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setConnectTimeout(50000);
-            urlConnection.setDoOutput(true);
-            Log.d("internet","5");
-            urlConnection.connect();
-
-            Log.d("internet","4");
-
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            Log.d("internet","5");
-            //readStream(in);
-            while(true) {
-                int i = in.read();
-                if (i == -1) {
-                    break;
-                }
-                //System.out.print((char)i);
-                weight = -2;
-            }
-            urlConnection.disconnect();
-        }catch (Exception e) {
-            //System.out.println(e.getMessage());
-            //Log.d("internet",e.getMessage());
-            Log.d("internet","Error");
-        } finally {
-
-        }*/
-
-
-        return weight;
     }
 
 
