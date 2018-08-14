@@ -65,7 +65,11 @@ public class MainActivity extends Activity {
             public void onClick(View arg0) {
                 TextView textView2 = (TextView)findViewById(R.id.textView13);
                 getWeight();
-                textView2.setText(Float.toString(weight));
+                if (weight < 0) {
+                    textView2.setText("0");
+                }else {
+                    textView2.setText(Float.toString(weight));
+                }
             }
         });
 
@@ -103,10 +107,15 @@ public class MainActivity extends Activity {
                     InputStreamReader isr = null;
                     //String ip = "172.217.25.227";
                     String ip = "192.168.100.167";
+
                     String text = "";
+                    Log.d("test","test");
                     try {
+                        Log.d("test2","test2");
                         url = new URL("http",ip,80,"/");
+                        Log.d("test3","test3");
                         InputStream is = url.openStream();
+                        Log.d("test4","test4");
                         isr = new InputStreamReader(is,"UTF-8");
 
                         while(true) {
@@ -117,7 +126,9 @@ public class MainActivity extends Activity {
                             text = text + (char)i;
                         }
                         //Log.d("internet:html",text);
+
                         weight = Float.parseFloat(text);
+                        //Log.d("test2","test2");
                     }catch (Exception e) {
                         Log.d("internet:error",e.getMessage());
                     }finally {

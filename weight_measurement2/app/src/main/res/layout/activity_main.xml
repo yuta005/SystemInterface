@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="#FFFFFF"
-    >
+    tools:context=".MainActivity">
 
     <!--<com.beardedhen.androidbootstrap.BootstrapLabel
         android:layout_width="wrap_content"
@@ -42,7 +41,7 @@
         android:ems="10"
         android:hint="Things you want to measure"
         android:inputType="textPersonName"
-        android:maxLength="7"/>
+        android:maxLength="7" />
 
     <View
         android:layout_width="fill_parent"
@@ -57,16 +56,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="183dp"
+        android:layout_marginBottom="167dp"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/textView14"
-        android:layout_marginStart="112dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <TextView
@@ -109,9 +109,10 @@
         app:roundedCorners="true"
         app:showOutline="false" />
 
-    <AutoCompleteTextView android:id="@+id/autocomplete_country"
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_country"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp" />
 
 </RelativeLayout>

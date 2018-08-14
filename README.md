@@ -1,2 +1,2 @@
 # SystemInterface
-- 後は、BLE関連の実装のみ？
+- 後はBLE関連の実装のみ？
